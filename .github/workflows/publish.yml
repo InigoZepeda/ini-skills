@@ -1,0 +1,33 @@
+name: publish
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      - name: Check the pack ships a CLI and every skill
+        run: |
+          npm pack --dry-run 2>&1 | tee pack.log
+          grep -q "bin/cli.js" pack.log
+          grep -q "skills/ux-reasoning/SKILL.md" pack.log
+          grep -q "skills/prototype-polish/SKILL.md" pack.log
+          grep -q "skills/product-ui-assets/SKILL.md" pack.log
+          grep -q "skills/brand-to-design-system/SKILL.md" pack.log
+
+      - name: Publish
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

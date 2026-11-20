@@ -1,5 +1,7 @@
 # ini-skills
 
+[![npm version](https://img.shields.io/npm/v/ini-skills.svg)](https://www.npmjs.com/package/ini-skills)
+
 The design toolkit for your coding agent. Think it through with `ux-reasoning`, finish it with `prototype-polish`, ship imagery with `product-ui-assets`, and turn a brand into a system with `brand-to-design-system`.
 
 From your project root:
