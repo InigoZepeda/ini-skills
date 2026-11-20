@@ -1,0 +1,36 @@
+{
+  "name": "ini-skills",
+  "version": "1.0.0",
+  "description": "Design skills for coding agents: UX reasoning, prototype polish, product-UI assets, brand → design system.",
+  "bin": {
+    "ini-skills": "bin/cli.js"
+  },
+  "files": [
+    "bin",
+    "skills",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "cursor",
+    "codex",
+    "opencode",
+    "design",
+    "ux",
+    "frontend"
+  ],
+  "engines": {
+    "node": ">=22.20.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/InigoZepeda/ini-skills.git"
+  },
+  "homepage": "https://github.com/InigoZepeda/ini-skills",
+  "publishConfig": {
+    "access": "public"
+  }
+}

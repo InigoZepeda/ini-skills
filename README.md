@@ -1,90 +1,175 @@
-# ini skills
+# ini-skills
 
-Agent skills I use for design and frontend work. Install any subset with the
-[`skills`](https://skills.sh) CLI — it works with Claude Code, OpenCode, Codex,
-Cursor and [80+ other agents](https://github.com/vercel-labs/skills/blob/main/docs/agents.md).
+The design toolkit for your coding agent. Think it through with `ux-reasoning`, finish it with `prototype-polish`, ship imagery with `product-ui-assets`, and turn a brand into a system with `brand-to-design-system`.
 
-## Install
+From your project root:
 
 ```bash
-# see what's in here first
-npx skills add InigoZepeda/ini-skills --list
-
-# install everything, globally, to every agent it can find
-npx skills add InigoZepeda/ini-skills --all -g -y
-
-# or pick exactly what you want, for specific agents
-npx skills add InigoZepeda/ini-skills -g -y \
-  -a claude-code -a opencode -a cursor -a codex \
-  -s ux-reasoning -s prototype-polish -s product-ui-assets -s brand-to-design-system
+npx ini-skills install
 ```
 
-Drop `-g` to install into the current project instead (`./.agents/skills/` +
-`./.<agent>/skills/`). Requires Node **22.20+**.
+Reload your coding tool, then just describe the work — "design me the checkout flow", "make this prototype feel alive", "build tokens from these screenshots".
 
-## Portability across agents
+Works with Claude Code, Cursor, Codex CLI, GitHub Copilot, OpenCode, Gemini CLI, Windsurf, Cline, Amp, Zed, Warp, and every other agent the [`skills`](https://skills.sh) CLI supports.
 
-`SKILL.md` is the same format everywhere (the [agent skills spec](https://agentskills.io)),
-so one pack serves every tool:
+| Without ini-skills | With ini-skills |
+|---|---|
+| A design request becomes a screen, and the states, edge cases and heuristic risks show up in review — or in production. | `ux-reasoning` names the risks and maps the states before any pixels exist, and hands you a rationale you can defend. |
+| Prototypes look finished but feel dead: no press states, no easing, nothing moves. | `prototype-polish` defines the motion, micro-interaction and aesthetic layer, applied automatically to any mockup. |
+| "Can you mock up how the product looks?" ends with screenshot collages or stock art. | `product-ui-assets` renders real product UI as code, on-token and re-renderable when the theme changes. |
+| Every project starts its palette, type scale and components from zero. | `brand-to-design-system` goes brand → palette → tokens → `DESIGN.md` → components, the same way each time. |
 
-- **Claude Code** → `~/.claude/skills/`
-- **OpenCode** → `~/.config/opencode/skills/`
-- **Cursor** → `~/.cursor/skills/`
-- **Codex** (incl. ChatGPT/Codex in Orca) → `~/.agents/skills/`
-- **GitHub Copilot** → `~/.copilot/skills/`
+## Why
 
-The CLI installs one canonical copy and links it into each agent, so `skills update`
-keeps them all in sync. Harnesses like Orca are just running one of these agents
-underneath, so global installs are what you want there.
+Ask an agent for a screen and you get the tasteful default: centered hero, three feature cards, generous padding, no thought about what happens when the list is empty. Ask for a polished prototype and you get flat rectangles. Ask for product screenshots and you get something that isn't your product.
 
-Because it all has to run outside Claude Code, this pack keeps to the portable
-subset:
+These four skills are the vocabulary for the parts that decision-by-decision get skipped:
 
-- Frontmatter is **`name` + `description` only**. `allowed-tools` works in most agents,
-  `context: fork` is Claude-only, and hooks don't survive the trip — so none of them
-  are used here.
-- No `$ARGUMENTS` substitution (Claude Code specific).
-- No absolute paths or machine-local references.
-- Broad `description` triggers instead of slash-command names.
-
-## Updating and removing
-
-```bash
-npx skills update -g                 # pull the latest from this repo
-npx skills list -g                   # what's installed
-npx skills remove -g ux-reasoning    # remove one
-```
-
-Local edits? `npx skills check` flags skills whose files drifted from the lock.
+- **Reasoning before pixels.** `ux-reasoning` questions the brief, names the heuristic risks, maps states and edge cases, and makes the trade-offs visible so you can push back.
+- **Motion that reads as production.** `prototype-polish` covers enter/exit, press and hover feedback, easing and duration — the difference between a mockup and something that feels alive.
+- **Imagery that is actually your product.** `product-ui-assets` builds visuals as React components rendered to PNG, so the text is exact, the numbers reconcile and everything re-renders on-token.
+- **A system, not a one-off.** `brand-to-design-system` turns a brand kit, screenshots or a live site into a two-tier token set and a small component library.
 
 ## What's inside
 
 | Skill | Use it when |
 |---|---|
-| `ux-reasoning` | A design request lands and you want the UX problem reasoned about before pixels: heuristic risks, states, edge cases, decisions you can defend. |
-| `prototype-polish` | Any HTML/CSS prototype or mockup needs to stop feeling flat: motion, micro-interactions, the aesthetic layer. |
-| `product-ui-assets` | A landing page needs real product-UI imagery, built as Remotion stills from reference assets. Needs the Remotion plugin, so Claude Code only in practice. |
-| `brand-to-design-system` | You have a brand kit / screenshots / site and need palette → tokens → `DESIGN.md` → components. |
+| **`ux-reasoning`** | A design request lands. It reasons about the problem first: brief, heuristic risks, states, edge cases, decisions in product terms. |
+| **`prototype-polish`** | Any HTML/CSS prototype, mockup or component needs motion, micro-interactions and the aesthetic layer. |
+| **`product-ui-assets`** | A landing page needs hero visuals, feature-card images or "how it works" fragments built from reference assets. |
+| **`brand-to-design-system`** | You have a brand and need palette, tokens, `DESIGN.md` and components. Brand-agnostic, client-ready. |
 
-## Deliberately excluded
+Each skill is a plain `SKILL.md` with progressive disclosure files next to it (`templates.md`, `scripts/`, `references/`), loaded only when the task needs them.
 
-- `impeccable-v3` — third-party (Apache 2.0), pinned old version. Installed on its own,
-  not redistributed here.
-- `ini-design-library`, `library-capture` — hardcode a local library path that only
-  exists on one machine.
-- `prototype`, `pick-ui-library`, `review-animations` — `disable-model-invocation: true`,
-  i.e. slash-command-only in Claude Code; useless in a shared pack.
+## How it works
 
-## Layout
+Skills load by description, not by command. You don't invoke anything: describe the work and the matching skill is read into context.
 
 ```
-skills/<skill-name>/SKILL.md      # required: name + description frontmatter
-skills/<skill-name>/...           # any extra .md, scripts/, references/
+design the onboarding flow for a B2B billing app
+make this pricing page feel expensive
+turn these brand screenshots into a token set
+build three feature-card images for the landing page
 ```
 
-`skills/` is a standard discovery location, so no manifest is needed. Adding a
-skill = add a folder with a `SKILL.md`, commit, done.
+Narrow targets get better results: one screen reasoned about closely beats a whole app at a glance. If you want to force one, name it — "use ux-reasoning on this checkout".
+
+## Installation
+
+```bash
+npx ini-skills install
+```
+
+The installer detects your coding tools, asks whether to install for this project or globally, and links all four skills into each one. Reload your tool afterward. `npx ini-skills update` refreshes an existing install.
+
+For scripts, pass flags straight through:
+
+```bash
+npx ini-skills install -g -a claude-code cursor codex -y
+```
+
+<details>
+<summary><b>Install only some skills or agents</b></summary>
+
+```bash
+npx ini-skills install --list                                  # see the pack
+npx ini-skills install -s ux-reasoning -s prototype-polish     # two of the four
+npx ini-skills install -a opencode -y                          # one agent
+```
+
+The wrapper passes every option to `skills add`, so `--skill`, `--agent`, `--global`, `--copy`, `--rename` and `--yes` all work.
+</details>
+
+<details>
+<summary><b>Install without this package</b></summary>
+
+The installer is a thin wrapper around the ecosystem CLI. Same result:
+
+```bash
+npx skills add InigoZepeda/ini-skills
+```
+
+Before the npm package exists, use the repo directly:
+
+```bash
+npx github:InigoZepeda/ini-skills install
+```
+</details>
+
+<details>
+<summary><b>Pin a version for a team</b></summary>
+
+```bash
+npx ini-skills@1.0.0 install          # pin the wrapper
+npx skills add InigoZepeda/ini-skills@v1.0.0
+```
+
+Project installs write `skills-lock.json` with a content hash per skill; commit it so the whole team gets the same files. `npx skills check` flags skills whose files drifted.
+</details>
+
+<details>
+<summary><b>Manual copy, no Node required</b></summary>
+
+Copy the `skills/` folder from this repo into the right place. Global folders:
+
+| Tool | Global skills folder |
+|---|---|
+| Claude Code | `~/.claude/skills/` |
+| OpenCode | `~/.config/opencode/skills/` |
+| Codex CLI | `~/.agents/skills/` |
+| Cursor | `~/.cursor/skills/` |
+| GitHub Copilot | `~/.copilot/skills/` |
+| Gemini CLI | `~/.gemini/skills/` |
+
+For example:
+
+```bash
+mkdir -p ~/.claude/skills
+cp -r skills/ux-reasoning skills/prototype-polish \
+      skills/product-ui-assets skills/brand-to-design-system \
+      ~/.claude/skills/
+```
+
+A manual copy won't appear in `skills list`, so `update` and `check` won't manage it.
+</details>
+
+Node 22.20+ is required — that is the floor for the `skills` CLI this wraps.
+
+## What gets installed
+
+One canonical copy lands in `~/.agents/skills/` (project installs: `./.agents/skills/`) and each agent gets a link to it, so an update happens once:
+
+| Tool | Linked path (global) |
+|---|---|
+| Claude Code | `~/.claude/skills/<skill>` |
+| OpenCode | `~/.config/opencode/skills/<skill>` |
+| Cursor | `~/.cursor/skills/<skill>` |
+| Codex, Copilot, Gemini, Windsurf, Cline, Amp, Zed | `~/.agents/skills/<skill>` |
+
+Nothing runs at load time beyond reading `SKILL.md`. No hooks, no MCP server, no binary, no commands.
+
+## Good to know
+
+**Project or global.** Project installs (`./.agents/skills/`) only apply inside that repo and belong in version control. Global installs apply everywhere, which is what you want for harnesses that switch working directories, like Orca.
+
+**What travels, what doesn't.** These skills are portable by design: `name` + `description` frontmatter only, no `$ARGUMENTS`, no absolute paths, no Claude-only fields. `product-ui-assets` is the exception — it renders with Remotion, so it needs the Remotion plugin, which in practice means Claude Code.
+
+**Telemetry.** The `skills` CLI records anonymous install events. Opt out with `DISABLE_TELEMETRY=1` or `DO_NOT_TRACK=1`.
+
+**Not in the pack.** `impeccable-v3` is third-party (Apache 2.0) and pinned separately. `ini-design-library` and `library-capture` hardcode a local library path, and `prototype` / `pick-ui-library` / `review-animations` are slash-command-only — none of them belong in a shared install.
+
+**Something broken?** `npx ini-skills list` shows what is installed and whether files drifted. `npx ini-skills install --list` shows what the pack contains.
+
+## Community
+
+- [Issues](https://github.com/InigoZepeda/ini-skills/issues) for bugs, questions and ideas.
+- [skills.sh](https://skills.sh) for the installer and the wider ecosystem.
+- [agentskills.io](https://agentskills.io) for the `SKILL.md` format.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).
+
+---
+
+Created by [Iñigo Zepeda](https://github.com/InigoZepeda)

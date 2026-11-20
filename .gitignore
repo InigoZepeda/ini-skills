@@ -2,3 +2,5 @@
 node_modules/
 skills-lock.json
 .agents/
+node_modules/
+*.tgz
