@@ -40,11 +40,13 @@ These four skills are the vocabulary for the parts that decision-by-decision get
 | **`prototype-polish`** | Any HTML/CSS prototype, mockup or component needs motion, micro-interactions and the aesthetic layer. |
 | **`product-ui-assets`** | A landing page needs hero visuals, feature-card images or "how it works" fragments built from reference assets. |
 | **`brand-to-design-system`** | You have a brand and need palette, tokens, `DESIGN.md` and components. Brand-agnostic, client-ready. |
-| **`library-capture`** | A URL needs adding to the [ini design library](https://github.com/InigoZepeda): capture, screenshot and video review, fixes, analysis, final check. |
+| **`library-capture`** | A URL needs adding to the ini design library: capture, screenshot and video review, fixes, analysis, final check. |
 | **`library-analyze`** | A capture needs its `analysis.json` written: sections, components, interactions, motion, SEO/security notes. |
 | **`ini-design-library`** | You want references from the library while designing: "find me a dark hero with product UI and a logo marquee". |
 
-The last three work against a local checkout of the design library. Point them at it with `INI_DESIGN_LIBRARY` if it isn't at `~/Documents/Personal Work/Personal Projects/ini-design-library`:
+The last three work against a **local checkout** of the design library. The library itself is not published as a repo yet — it's a Next.js app with the captures, `index.json` and taxonomy, living on my machine. These skills ship so the workflow can be installed anywhere that checkout exists; without it they stop and say so.
+
+Point them at the checkout with `INI_DESIGN_LIBRARY` if it isn't at `~/Documents/Personal Work/Personal Projects/ini-design-library`:
 
 ```bash
 export INI_DESIGN_LIBRARY="$HOME/path/to/ini-design-library"   # add to ~/.zshrc
@@ -168,7 +170,7 @@ Nothing runs at load time beyond reading `SKILL.md`. No hooks, no MCP server, no
 
 **Telemetry.** The `skills` CLI records anonymous install events. Opt out with `DISABLE_TELEMETRY=1` or `DO_NOT_TRACK=1`.
 
-**Not in the pack.** `impeccable-v3` is third-party (Apache 2.0) and pinned separately. `prototype` / `pick-ui-library` / `review-animations` are slash-command-only, so they're dead weight in a shared install. The library skills ship as instructions only — the library itself (screenshots, `index.json`, the Next.js app) stays on the machine that owns it.
+**Not in the pack.** `impeccable-v3` is third-party (Apache 2.0) and pinned separately. `prototype` / `pick-ui-library` / `review-animations` are slash-command-only, so they're dead weight in a shared install. The library skills ship as instructions only: the library itself (screenshots, `index.json`, the Next.js app) is a local checkout, not published as a repo yet.
 
 **Something broken?** `npx ini-skills list` shows what is installed and whether files drifted. `npx ini-skills install --list` shows what the pack contains.
 
