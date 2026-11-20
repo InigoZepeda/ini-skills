@@ -1,7 +1,7 @@
 {
   "name": "ini-skills",
-  "version": "1.0.1",
-  "description": "Design skills for coding agents: UX reasoning, prototype polish, product-UI assets, brand → design system.",
+  "version": "1.1.0",
+  "description": "Design skills for coding agents: UX reasoning, prototype polish, product-UI assets, brand → design system, and the ini design library workflow.",
   "bin": {
     "ini-skills": "bin/cli.js"
   },

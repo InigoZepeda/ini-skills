@@ -40,6 +40,15 @@ These four skills are the vocabulary for the parts that decision-by-decision get
 | **`prototype-polish`** | Any HTML/CSS prototype, mockup or component needs motion, micro-interactions and the aesthetic layer. |
 | **`product-ui-assets`** | A landing page needs hero visuals, feature-card images or "how it works" fragments built from reference assets. |
 | **`brand-to-design-system`** | You have a brand and need palette, tokens, `DESIGN.md` and components. Brand-agnostic, client-ready. |
+| **`library-capture`** | A URL needs adding to the [ini design library](https://github.com/InigoZepeda): capture, screenshot and video review, fixes, analysis, final check. |
+| **`library-analyze`** | A capture needs its `analysis.json` written: sections, components, interactions, motion, SEO/security notes. |
+| **`ini-design-library`** | You want references from the library while designing: "find me a dark hero with product UI and a logo marquee". |
+
+The last three work against a local checkout of the design library. Point them at it with `INI_DESIGN_LIBRARY` if it isn't at `~/Documents/Personal Work/Personal Projects/ini-design-library`:
+
+```bash
+export INI_DESIGN_LIBRARY="$HOME/path/to/ini-design-library"   # add to ~/.zshrc
+```
 
 Each skill is a plain `SKILL.md` with progressive disclosure files next to it (`templates.md`, `scripts/`, `references/`), loaded only when the task needs them.
 
@@ -52,6 +61,7 @@ design the onboarding flow for a B2B billing app
 make this pricing page feel expensive
 turn these brand screenshots into a token set
 build three feature-card images for the landing page
+add linear.app to the design library
 ```
 
 Narrow targets get better results: one screen reasoned about closely beats a whole app at a glance. If you want to force one, name it — "use ux-reasoning on this checkout".
@@ -158,7 +168,7 @@ Nothing runs at load time beyond reading `SKILL.md`. No hooks, no MCP server, no
 
 **Telemetry.** The `skills` CLI records anonymous install events. Opt out with `DISABLE_TELEMETRY=1` or `DO_NOT_TRACK=1`.
 
-**Not in the pack.** `impeccable-v3` is third-party (Apache 2.0) and pinned separately. `ini-design-library` and `library-capture` hardcode a local library path, and `prototype` / `pick-ui-library` / `review-animations` are slash-command-only — none of them belong in a shared install.
+**Not in the pack.** `impeccable-v3` is third-party (Apache 2.0) and pinned separately. `prototype` / `pick-ui-library` / `review-animations` are slash-command-only, so they're dead weight in a shared install. The library skills ship as instructions only — the library itself (screenshots, `index.json`, the Next.js app) stays on the machine that owns it.
 
 **Something broken?** `npx ini-skills list` shows what is installed and whether files drifted. `npx ini-skills install --list` shows what the pack contains.
 
